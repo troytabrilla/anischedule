@@ -1,0 +1,60 @@
+query AniScheduleQuery($page: Int, $season: MediaSeason, $seasonYear: Int) {
+    Page(page: $page, perPage: 50) {
+        media(season: $season, seasonYear: $seasonYear, type: ANIME) {
+            id
+            title {
+                romaji
+                english
+                native
+            }
+            format
+            type
+            status
+            description
+            season
+            seasonYear
+            episodes
+            coverImage {
+                large
+                extraLarge
+            }
+            genres
+            tags {
+                name
+                rank
+            }
+            nextAiringEpisode {
+                airingAt
+                timeUntilAiring
+                episode
+                id
+            }
+            airingSchedule {
+                nodes {
+                    airingAt
+                    timeUntilAiring
+                    episode
+                    id
+                }
+            }
+            siteUrl
+            startDate {
+                year
+                month
+                day
+            }
+            endDate {
+                year
+                month
+                day
+            }
+        }
+        pageInfo {
+            total
+            perPage
+            currentPage
+            lastPage
+            hasNextPage
+        }
+    }
+}
