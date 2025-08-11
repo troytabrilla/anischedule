@@ -13,39 +13,38 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anischedule.anilistapi.AniListAPI;
+import com.anischedule.cache.APICache;
 import com.anischedule.exceptions.APIException;
 import com.anischedule.exceptions.BadRequestException;
 import com.anischedule.records.Anime;
 import com.anischedule.records.Season;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import redis.clients.jedis.UnifiedJedis;
 
 @RestController
 public class AnimeController {
     private final AniListAPI api;
+    private final APICache cache;
 
     public AnimeController() {
         this.api = new AniListAPI();
+        this.cache = new APICache();
     }
 
-    public AnimeController(AniListAPI api) {
+    public AnimeController(AniListAPI api, APICache cache) {
         this.api = api != null ? api : new AniListAPI();
+        this.cache = cache != null ? cache : new APICache();
     }
 
-    // TODO refactor UnifiedJedis into Cache class (cache folder)
-    // TODO figure out dependency injection for cache and anilistapi classes
     @RequestMapping("/anime")
     public Map<String, Object> anime(
-            @RequestParam(required = false) String season,
-            @RequestParam(required = false) Integer year,
-            @RequestParam(required = false, defaultValue = "false") Boolean cached)
+        @RequestParam(required = false) String season,
+        @RequestParam(required = false) Integer year,
+        @RequestParam(required = false, defaultValue = "false") Boolean cached)
     throws Exception {
         Season targetSeason = validateParams(season, year);
+        String cacheKey = getCacheKey(targetSeason);
 
         if (cached == true) {
-            Map<String, Object> cachedResults = getCachedResults(targetSeason);
+            Map<String, Object> cachedResults = cache.get(cacheKey);
             if (cachedResults != null) {
                 return cachedResults;
             }
@@ -57,7 +56,7 @@ public class AnimeController {
         results.put("anime", animeList);
 
         if (cached == true) {
-            cacheResults(targetSeason, results);
+            cache.set(cacheKey, results);
         }
 
         return results;
@@ -77,36 +76,8 @@ public class AnimeController {
         return new Season(season, year);
     }
 
-    private Map<String, Object> getCachedResults(Season season) {
-        Map<String, Object> results = null;
-        try (UnifiedJedis jedis = new UnifiedJedis(getRedisUrl())) {
-            String cacheKey = "anime|" + season.season() + "|" + season.year();
-            String cached = jedis.get(cacheKey);
-            ObjectMapper mapper = new ObjectMapper();
-            results = mapper.readValue(cached, new TypeReference<Map<String, Object>>() {
-            });
-            System.out.println("Cache Hit");
-        } catch (Exception e) {
-            System.out.println("Cache Miss");
-            System.err.println("Could not fetch cached results: " + e);
-        }
-        return results;
-    }
-
-    private void cacheResults(Season season, Map<String, Object> results) {
-        try (UnifiedJedis jedis = new UnifiedJedis(getRedisUrl())) {
-            String cacheKey = "anime|" + season.season() + "|" + season.year();
-            ObjectMapper mapper = new ObjectMapper();
-            jedis.set(cacheKey, mapper.writeValueAsString(results));
-            jedis.pexpire(cacheKey, 86400 * 1000);
-        } catch (Exception e) {
-            System.err.println("Could not cache results: " + e);
-        }
-    }
-
-    private String getRedisUrl() {
-        String url = System.getenv("REDIS_URL");
-        return url != null ? url : "redis://localhost:6379";
+    private String getCacheKey(Season season) {
+        return "anime|" + season.season() + "|" + season.year();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
