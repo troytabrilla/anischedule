@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,12 +34,12 @@ public class AnimeController {
         this.cache = cache != null ? cache : new APICache();
     }
 
-    @RequestMapping("/anime")
+    @GetMapping("/anime")
     public Map<String, Object> anime(
         @RequestParam(required = false) String season,
         @RequestParam(required = false) Integer year,
-        @RequestParam(required = false, defaultValue = "false") Boolean cached)
-    throws Exception {
+        @RequestParam(required = false, defaultValue = "true") Boolean cached
+    ) throws Exception {
         Season targetSeason = validateParams(season, year);
         String cacheKey = getCacheKey(targetSeason);
 

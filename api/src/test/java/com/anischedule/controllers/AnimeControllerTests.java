@@ -1,13 +1,10 @@
 package com.anischedule.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.core5.http.ClassicHttpRequest;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,14 +19,12 @@ import com.anischedule.exceptions.BadRequestException;
 import com.anischedule.records.Anime;
 import com.anischedule.records.Season;
 
-@SuppressWarnings("unchecked")
 public class AnimeControllerTests {
 
     private AnimeController controller;
-    private AniListAPI anilistApi;
 
     @Mock
-    private HttpClient mockClient;
+    private AniListAPI mockAnilistApi;
 
     @Mock
     private APICache mockCache;
@@ -37,16 +32,12 @@ public class AnimeControllerTests {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        anilistApi = new AniListAPI(mockClient);
-        controller = new AnimeController(anilistApi, mockCache);
+        controller = new AnimeController(mockAnilistApi, mockCache);
     }
 
     @Test
     public void animeLoads() throws Exception {
         Season season = new Season("SUMMER", 2025);
-        JSONObject testResponse = new JSONObject("{\"data\":{\"Page\":{\"media\":[{\"id\":1,\"title\":{\"romaji\":\"romaji\",\"english\":\"english\",\"native\":\"native\"},\"description\":\"description\",\"season\":\"SUMMER\",\"seasonYear\":2025,\"episodes\":12,\"coverImage\":{\"large\":\"large\",\"extraLarge\":\"extraLarge\"},\"nextAiringEpisode\":{\"airingAt\":2,\"episode\":3},\"siteUrl\":\"url\"}],\"pageInfo\":{\"total\":1,\"perPage\":50,\"currentPage\":1,\"lastPage\":1,\"hasNextPage\":false}}}}");
-        Mockito.when(mockClient.execute(Mockito.any(ClassicHttpRequest.class), Mockito.any(HttpClientResponseHandler.class))).thenReturn(testResponse);
-
         ArrayList<Anime> anime = new ArrayList<>();
         anime.add(new Anime(
             1,
@@ -65,6 +56,7 @@ public class AnimeControllerTests {
         ));
         Map<String, Object> expected = new HashMap<>();
         expected.put("anime", anime);
+        Mockito.when(mockAnilistApi.loadSeasonAnime(season)).thenReturn(anime);
 
         Map<String, Object> actual = controller.anime(season.season(), season.year(), false);
 
@@ -74,9 +66,7 @@ public class AnimeControllerTests {
     @Test
     public void animeThrowsAPIException() throws Exception {
         Season season = new Season("SUMMER", 2025);
-        JSONObject testResponse = new JSONObject("{}");
-        Mockito.when(mockClient.execute(Mockito.any(ClassicHttpRequest.class), Mockito.any(HttpClientResponseHandler.class))).thenReturn(testResponse);
-
+        Mockito.when(mockAnilistApi.loadSeasonAnime(season)).thenThrow(new APIException("Invalid Format", Arrays.asList("No Data")));
 
         Exception actual = Assertions.assertThrows(APIException.class, () -> controller.anime(season.season(), season.year(), false));
         Assertions.assertTrue(actual.toString().contains("Invalid Format - [No Data]"));
@@ -92,10 +82,6 @@ public class AnimeControllerTests {
     public void animeCachesResults() throws Exception {
         Season season = new Season("SUMMER", 2025);
         String key = "anime|SUMMER|2025";
-        JSONObject testResponse = new JSONObject("{\"data\":{\"Page\":{\"media\":[{\"id\":1,\"title\":{\"romaji\":\"romaji\",\"english\":\"english\",\"native\":\"native\"},\"description\":\"description\",\"season\":\"SUMMER\",\"seasonYear\":2025,\"episodes\":12,\"coverImage\":{\"large\":\"large\",\"extraLarge\":\"extraLarge\"},\"nextAiringEpisode\":{\"airingAt\":2,\"episode\":3},\"siteUrl\":\"url\"}],\"pageInfo\":{\"total\":1,\"perPage\":50,\"currentPage\":1,\"lastPage\":1,\"hasNextPage\":false}}}}");
-        Mockito.when(mockClient.execute(Mockito.any(ClassicHttpRequest.class), Mockito.any(HttpClientResponseHandler.class))).thenReturn(testResponse);
-        Mockito.when(mockCache.get(key)).thenReturn(null);
-        Mockito.when(mockCache.set(key, testResponse.toString())).thenReturn(true);
 
         ArrayList<Anime> anime = new ArrayList<>();
         anime.add(new Anime(
@@ -115,6 +101,9 @@ public class AnimeControllerTests {
         ));
         Map<String, Object> expected = new HashMap<>();
         expected.put("anime", anime);
+        Mockito.when(mockAnilistApi.loadSeasonAnime(season)).thenReturn(anime);
+        Mockito.when(mockCache.get(key)).thenReturn(null);
+        Mockito.when(mockCache.set(key, expected)).thenReturn(true);
 
         Map<String, Object> actual = controller.anime(season.season(), season.year(), true);
 
