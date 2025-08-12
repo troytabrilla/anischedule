@@ -1,34 +1,33 @@
 import './App.css';
 
 import { useReducer, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 import reducer, { initialState } from '../reducers/app';
 import fetchAnime from '../util/fetchAnime';
 
+import Header from './Header';
 import Filters from './Filters';
 import Schedule from './Schedule';
-import ErrorHandler from './ErrorHandler';
+import Toast from './Toast';
+import Footer from './Footer';
 
 function App() {
     const [state, dispatch] = useReducer(reducer, initialState());
 
     useEffect(() => {
-        fetchAnime()
+        const promise = fetchAnime(state.season, state.year, state.includeAdultContent)
             .then((data) => dispatch({ type: 'anime', payload: data }))
-            .catch((err) => dispatch({ type: 'error', payload: err }));
-    }, []);
-
-    useEffect(() => {
-        fetchAnime(state.season, state.year, state.includeAdultContent)
-            .then((data) => dispatch({ type: 'anime', payload: data }))
-            .catch((err) => dispatch({ type: 'error', payload: err }));
+            .catch((error) => {
+                dispatch({ type: 'error', payload: { error } });
+                throw error;
+            });
+        toastify(promise, `${state.season}|${state.year}|${state.includeAdultContent}`);
     }, [state.season, state.year, state.includeAdultContent]);
 
     return (
         <>
-            <header>
-                <h1>AniSchedule</h1>
-            </header>
+            <Header />
             <main className="app column centered">
                 <Filters
                     season={state.season}
@@ -38,22 +37,24 @@ function App() {
                     dispatch={dispatch}
                 />
                 <Schedule anime={state.anime} timezone={state.timezone} />
-                <ErrorHandler error={state.error} />
+                <Toast />
             </main>
-            <footer>
-                <em>
-                    Created by{' '}
-                    <a href="https://github.com/troytabrilla" target="_blank">
-                        troytabrilla
-                    </a>
-                    . Data sourced by the{' '}
-                    <a href="https://docs.anilist.co/" target="_blank">
-                        AniList API
-                    </a>
-                    .
-                </em>
-            </footer>
+            <Footer />
         </>
+    );
+}
+
+function toastify(promise: Promise<unknown>, toastId: string) {
+    toast.promise(
+        promise,
+        {
+            pending: 'Loading...',
+            success: 'Finished!',
+            error: 'Whoops! Something weird happened. Please try again in a bit.',
+        },
+        {
+            toastId,
+        }
     );
 }
 

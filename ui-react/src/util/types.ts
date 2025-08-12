@@ -24,7 +24,8 @@ export interface State {
     seasonRange: string[];
     timezone: string;
     includeAdultContent: boolean;
-    error?: Error;
+    loading: boolean;
+    error: Error | null;
 }
 
 export interface Action {

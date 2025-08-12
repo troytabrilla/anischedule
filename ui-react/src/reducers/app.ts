@@ -9,18 +9,21 @@ const debug = _debug('reducers:app');
 function reducer(state: State, action: Action): State {
     switch (action.type) {
         case 'anime': {
-            const response = action.payload as Pick<State, 'anime'>;
+            const updates = action.payload as Pick<State, 'anime'>;
             return {
                 ...state,
-                anime: response.anime,
+                anime: updates.anime,
+                error: null,
+                loading: false,
             };
         }
         case 'error': {
-            const error = action.payload as Error;
-            debug(error.toString());
+            const updates = action.payload as Pick<State, 'error'>;
+            debug(updates.error?.toString());
             return {
                 ...state,
-                error,
+                error: updates.error,
+                loading: false,
             };
         }
         case 'season': {
@@ -29,6 +32,7 @@ function reducer(state: State, action: Action): State {
                 ...state,
                 season: updates.season,
                 year: updates.year,
+                loading: true,
             };
         }
         case 'includeAdultContent': {
@@ -36,6 +40,7 @@ function reducer(state: State, action: Action): State {
             return {
                 ...state,
                 includeAdultContent: updates.includeAdultContent,
+                loading: true,
             };
         }
     }
@@ -53,6 +58,8 @@ export function initialState(): State {
         seasonRange: getSeasonRange(month, year),
         timezone: dayjs.tz.guess(),
         includeAdultContent: false,
+        loading: true,
+        error: null,
     };
 }
 
