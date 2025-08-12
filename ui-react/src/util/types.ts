@@ -23,6 +23,7 @@ export interface State {
     year: number;
     seasonRange: string[];
     timezone: string;
+    includeAdultContent: boolean;
     error?: Error;
 }
 

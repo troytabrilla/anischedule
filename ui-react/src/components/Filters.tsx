@@ -4,27 +4,45 @@ import type { ActionDispatch, ChangeEvent } from 'react';
 
 import type { State, Action } from '../util/types';
 
-type Props = Pick<State, 'season' | 'year' | 'seasonRange'> & { dispatch: ActionDispatch<[Action]> };
+type Props = Pick<State, 'season' | 'year' | 'seasonRange' | 'includeAdultContent'> & {
+    dispatch: ActionDispatch<[Action]>;
+};
 
-// TODO add checkbox filter to include adult content? for now, filter out
-function Filters({ season, year, seasonRange, dispatch }: Props) {
+function Filters({ season, year, seasonRange, includeAdultContent, dispatch }: Props) {
     const currentSeason = `${season} ${year}`;
-    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const handleSeasonChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const [newSeason, newYear] = e.target.value.split(' ');
         dispatch({ type: 'season', payload: { season: newSeason, year: newYear } });
     };
+    const handleAdultContentChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const newIncludeAdultContent = e.target.checked;
+        dispatch({ type: 'includeAdultContent', payload: { includeAdultContent: newIncludeAdultContent } });
+    };
     return (
-        <section className="filters row centered">
-            <label htmlFor="season" className="label">
-                Season
-            </label>
-            <select id="season" value={currentSeason} onChange={handleChange}>
-                {seasonRange.map((s) => (
-                    <option key={s} value={s}>
-                        {capitalize(s)}
-                    </option>
-                ))}
-            </select>
+        <section className="filters row centered justify-centered">
+            <fieldset className="filter">
+                <label htmlFor="season" className="label">
+                    Season
+                </label>
+                <select id="season" value={currentSeason} onChange={handleSeasonChange}>
+                    {seasonRange.map((s) => (
+                        <option key={s} value={s}>
+                            {capitalize(s)}
+                        </option>
+                    ))}
+                </select>
+            </fieldset>
+            <fieldset className="filter">
+                <label htmlFor="includeAdultContent" className="label small row centered">
+                    Include Adult Content
+                    <input
+                        id="includeAdultContent"
+                        type="checkbox"
+                        defaultChecked={includeAdultContent}
+                        onChange={handleAdultContentChange}
+                    />
+                </label>
+            </fieldset>
         </section>
     );
 }

@@ -19,12 +19,10 @@ function App() {
     }, []);
 
     useEffect(() => {
-        if (state.season && state.year) {
-            fetchAnime(state.season, state.year)
-                .then((data) => dispatch({ type: 'anime', payload: data }))
-                .catch((err) => dispatch({ type: 'error', payload: err }));
-        }
-    }, [state.season, state.year]);
+        fetchAnime(state.season, state.year, state.includeAdultContent)
+            .then((data) => dispatch({ type: 'anime', payload: data }))
+            .catch((err) => dispatch({ type: 'error', payload: err }));
+    }, [state.season, state.year, state.includeAdultContent]);
 
     return (
         <>
@@ -32,7 +30,13 @@ function App() {
                 <h1>AniSchedule</h1>
             </header>
             <main className="app column centered">
-                <Filters season={state.season} year={state.year} seasonRange={state.seasonRange} dispatch={dispatch} />
+                <Filters
+                    season={state.season}
+                    year={state.year}
+                    seasonRange={state.seasonRange}
+                    includeAdultContent={state.includeAdultContent}
+                    dispatch={dispatch}
+                />
                 <Schedule anime={state.anime} timezone={state.timezone} />
                 <ErrorHandler error={state.error} />
             </main>

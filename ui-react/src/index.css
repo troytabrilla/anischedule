@@ -23,3 +23,7 @@ body {
 .centered {
     align-items: center;
 }
+
+.justify-centered {
+    justify-content: center;
+}

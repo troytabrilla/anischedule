@@ -31,6 +31,13 @@ function reducer(state: State, action: Action): State {
                 year: updates.year,
             };
         }
+        case 'includeAdultContent': {
+            const updates = action.payload as Pick<State, 'includeAdultContent'>;
+            return {
+                ...state,
+                includeAdultContent: updates.includeAdultContent,
+            };
+        }
     }
     throw new Error(`Unknown Action: ${action.type}`);
 }
@@ -45,6 +52,7 @@ export function initialState(): State {
         year,
         seasonRange: getSeasonRange(month, year),
         timezone: dayjs.tz.guess(),
+        includeAdultContent: false,
     };
 }
 

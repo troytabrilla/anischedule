@@ -15,11 +15,8 @@ function Schedule({ anime }: Props) {
     );
 }
 
-function filterAnime(anime: Anime[], day: number, includeAdult: boolean = false) {
+function filterAnime(anime: Anime[], day: number) {
     return anime.filter((a) => {
-        if (!includeAdult && a.isAdult) {
-            return false;
-        }
         const nextEpisodeAiringAt = a.nextEpisodeAiringAt;
         if (nextEpisodeAiringAt) {
             const date = dayjs.unix(nextEpisodeAiringAt);
