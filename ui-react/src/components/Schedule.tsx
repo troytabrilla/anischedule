@@ -5,19 +5,21 @@ import type { Anime, State } from '../util/types';
 
 type Props = Pick<State, 'anime' | 'timezone'>;
 
-// TODO add days and anime components
 function Schedule({ anime }: Props) {
     return (
-        <section className="row">
+        <section className="schedule row">
             {[...Array(7).keys()].map((day) => (
-                <Day key={day} anime={animeByDay(anime, day)} day={day} />
+                <Day key={day} anime={filterAnime(anime, day)} day={day} />
             ))}
         </section>
     );
 }
 
-function animeByDay(anime: Anime[], day: number) {
+function filterAnime(anime: Anime[], day: number, includeAdult: boolean = false) {
     return anime.filter((a) => {
+        if (!includeAdult && a.isAdult) {
+            return false;
+        }
         const nextEpisodeAiringAt = a.nextEpisodeAiringAt;
         if (nextEpisodeAiringAt) {
             const date = dayjs.unix(nextEpisodeAiringAt);

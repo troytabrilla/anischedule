@@ -19,7 +19,7 @@ function ErrorHandler({ error }: Props) {
         }
     }, [debounced]);
 
-    return <ToastContainer position="top-center" limit={1} />;
+    return <ToastContainer className="errors" position="top-center" limit={1} />;
 }
 
 export default ErrorHandler;

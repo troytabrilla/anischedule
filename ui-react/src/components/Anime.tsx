@@ -1,3 +1,5 @@
+import './Anime.css';
+
 import dayjs from '../util/dayjs';
 
 import type { Anime as AnimeType } from '../util/types';
@@ -10,7 +12,7 @@ function Anime({ anime }: Props) {
     const title = truncate(anime.englishTitle ?? anime.romajiTitle ?? anime.nativeTitle ?? '');
     const nextEpisodeAiringAt = anime.nextEpisodeAiringAt ? dayjs.unix(anime.nextEpisodeAiringAt) : null;
     return (
-        <section className="column centered">
+        <section className="anime column centered">
             <div>
                 {anime.thumbnailLarge && (
                     <a href={anime.url} target="_blank">
@@ -29,11 +31,11 @@ function Anime({ anime }: Props) {
     );
 }
 
-function truncate(title?: string) {
-    if (!title || title.length <= 25) {
+function truncate(title: string, length: number = 40) {
+    if (title.length <= length) {
         return title;
     }
-    return title.substring(0, 22) + '...';
+    return title.substring(0, length - 3) + '...';
 }
 
 export default Anime;

@@ -14,6 +14,7 @@ export interface Anime {
     url?: string;
     thumbnailExtraLarge?: string;
     thumbnailLarge?: string;
+    isAdult?: boolean;
 }
 
 export interface State {

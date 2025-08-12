@@ -1,0 +1,6 @@
+.anime {
+    min-width: calc(1 / 7 * 100vw - 1rem);
+    border: 1px solid grey;
+    margin: 0.1rem;
+    padding: 1rem 0;
+}

@@ -6,7 +6,7 @@ type Props = Pick<State, 'anime'> & { day: number };
 
 function Day({ anime, day }: Props) {
     return (
-        <section className="column centered">
+        <section className="day column centered">
             <h2>{dayToString(day)}</h2>
             {anime.sort(comparator).map((a) => (
                 <Anime key={a.id} anime={a} />

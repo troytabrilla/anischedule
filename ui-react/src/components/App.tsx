@@ -31,7 +31,7 @@ function App() {
             <header>
                 <h1>AniSchedule</h1>
             </header>
-            <main className="column centered">
+            <main className="app column centered">
                 <Filters season={state.season} year={state.year} seasonRange={state.seasonRange} dispatch={dispatch} />
                 <Schedule anime={state.anime} timezone={state.timezone} />
                 <ErrorHandler error={state.error} />
