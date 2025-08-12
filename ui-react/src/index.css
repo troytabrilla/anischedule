@@ -9,11 +9,16 @@ body {
     padding: 1rem;
 }
 
+.row {
+    display: flex;
+    flex-flow: row;
+}
+
 .column {
     display: flex;
     flex-flow: column;
 }
 
-.column.centered {
+.centered {
     align-items: center;
 }

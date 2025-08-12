@@ -9,7 +9,8 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "prestart": "npm run build",
+        "preserver": "npm run clean && npm run build",
+        "server": "node src/server.ts",
         "start": "node src/server.ts"
     },
     "dependencies": {

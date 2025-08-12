@@ -1,18 +1,23 @@
-import type { ActionDispatch } from 'react';
+import type { ActionDispatch, ChangeEvent } from 'react';
 import type { State, Action } from '../reducers/app';
 
-type Props = Omit<State, 'anime' | 'error'> & { dispatch: ActionDispatch<[Action]> };
+type Props = Pick<State, 'season' | 'year' | 'seasonRange'> & { dispatch: ActionDispatch<[Action]> };
 
-// TODO add season selector
-// TODO add timezone toggle (local/utc)?
-function Filters({ season, year, timezone, seasonRange, dispatch }: Props) {
+function Filters({ season, year, seasonRange, dispatch }: Props) {
     const currentSeason = `${season} ${year}`;
+    const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const [newSeason, newYear] = e.target.value.split(' ');
+        dispatch({ type: 'season', payload: { season: newSeason, year: newYear } });
+    };
     return (
-        <section className="column centered">
-            <h2>Filters</h2>
-            <p>
-                {currentSeason} {seasonRange.join(',')} {timezone}
-            </p>
+        <section className="row centered">
+            <select id="season" value={currentSeason} onChange={handleChange}>
+                {seasonRange.map((s) => (
+                    <option key={s} value={s}>
+                        {s}
+                    </option>
+                ))}
+            </select>
         </section>
     );
 }

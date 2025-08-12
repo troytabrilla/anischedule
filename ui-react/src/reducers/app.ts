@@ -40,14 +40,10 @@ export interface Action {
     payload?: unknown;
 }
 
-export interface APIResponse {
-    anime: Anime[];
-}
-
 function reducer(state: State, action: Action): State {
     switch (action.type) {
-        case 'init': {
-            const response = action.payload as APIResponse;
+        case 'anime': {
+            const response = action.payload as Pick<State, 'anime'>;
             return {
                 ...state,
                 anime: response.anime,
@@ -61,8 +57,14 @@ function reducer(state: State, action: Action): State {
                 error,
             };
         }
-        // TODO add season change
-        // TODO add timezone change (?)
+        case 'season': {
+            const updates = action.payload as Pick<State, 'season' | 'year'>;
+            return {
+                ...state,
+                season: updates.season,
+                year: updates.year,
+            };
+        }
     }
     throw new Error(`Unknown Action: ${action.type}`);
 }
