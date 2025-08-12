@@ -151,7 +151,8 @@ public class AniListAPI {
                 nextAiringEpisode.isNull("episode") ? null : nextAiringEpisode.getInt("episode"),
                 entry.isNull("siteUrl") ? null : entry.getString("siteUrl"),
                 coverImage == null || coverImage.isNull("extraLarge") ? null : coverImage.getString("extraLarge"),
-                coverImage == null || coverImage.isNull("large") ? null : coverImage.getString("large")
+                coverImage == null || coverImage.isNull("large") ? null : coverImage.getString("large"),
+                entry.isNull("isAdult") ? null : entry.getBoolean("isAdult")
             );
             animeList.add(anime);
         }

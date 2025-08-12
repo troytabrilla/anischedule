@@ -13,5 +13,6 @@ public record Anime(
     Integer nextAiringEpisode,
     String url,
     String thumbnailExtraLarge,
-    String thumbnailLarge
+    String thumbnailLarge,
+    Boolean isAdult
 ) {}

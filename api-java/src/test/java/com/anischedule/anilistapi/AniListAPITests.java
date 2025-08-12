@@ -36,7 +36,7 @@ class AniListAPITests {
     public void loadsValidSeasonAnime() throws Exception {
         AniListAPI spy = Mockito.spy(anilistApi);
         Season season = new Season("SUMMER", 2025);
-        JSONObject testResponse = new JSONObject("{\"data\":{\"Page\":{\"media\":[{\"id\":1,\"title\":{\"romaji\":\"romaji\",\"english\":\"english\",\"native\":\"native\"},\"description\":\"description\",\"season\":\"SUMMER\",\"seasonYear\":2025,\"episodes\":12,\"coverImage\":{\"large\":\"large\",\"extraLarge\":\"extraLarge\"},\"nextAiringEpisode\":{\"airingAt\":2,\"episode\":3},\"siteUrl\":\"url\"}],\"pageInfo\":{\"total\":1,\"perPage\":50,\"currentPage\":1,\"lastPage\":1,\"hasNextPage\":false}}}}");
+        JSONObject testResponse = new JSONObject("{\"data\":{\"Page\":{\"media\":[{\"id\":1,\"title\":{\"romaji\":\"romaji\",\"english\":\"english\",\"native\":\"native\"},\"description\":\"description\",\"season\":\"SUMMER\",\"seasonYear\":2025,\"episodes\":12,\"coverImage\":{\"large\":\"large\",\"extraLarge\":\"extraLarge\"},\"nextAiringEpisode\":{\"airingAt\":2,\"episode\":3},\"siteUrl\":\"url\",\"isAdult\":false}],\"pageInfo\":{\"total\":1,\"perPage\":50,\"currentPage\":1,\"lastPage\":1,\"hasNextPage\":false}}}}");
         Mockito.when(mockClient.execute(Mockito.any(ClassicHttpRequest.class), Mockito.any(HttpClientResponseHandler.class))).thenReturn(testResponse);
 
         ArrayList<Anime> expected = new ArrayList<>();
@@ -53,7 +53,8 @@ class AniListAPITests {
             3,
             "url",
             "extraLarge",
-            "large"
+            "large",
+            false
         ));
 
         ArrayList<Anime> actual = spy.loadSeasonAnime(season);

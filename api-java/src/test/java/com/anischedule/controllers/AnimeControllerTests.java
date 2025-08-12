@@ -52,7 +52,8 @@ public class AnimeControllerTests {
             3,
             "url",
             "extraLarge",
-            "large"
+            "large",
+            false
         ));
         Map<String, Object> expected = new HashMap<>();
         expected.put("anime", anime);
@@ -97,7 +98,8 @@ public class AnimeControllerTests {
             3,
             "url",
             "extraLarge",
-            "large"
+            "large",
+            false
         ));
         Map<String, Object> expected = new HashMap<>();
         expected.put("anime", anime);
@@ -131,7 +133,8 @@ public class AnimeControllerTests {
             3,
             "url",
             "extraLarge",
-            "large"
+            "large",
+            false
         ));
         Map<String, Object> expected = new HashMap<>();
         expected.put("anime", anime);
