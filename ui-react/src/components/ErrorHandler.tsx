@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 
-import type { State } from '../reducers/app';
+import type { State } from '../util/types';
 
 type Props = Pick<State, 'error'>;
 

@@ -1,6 +1,6 @@
 import APIError from '../errors/APIError';
 
-import type { Season } from '../reducers/app';
+import type { Season } from '../util/types';
 
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL;
 

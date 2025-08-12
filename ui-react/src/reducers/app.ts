@@ -1,44 +1,10 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import tz from 'dayjs/plugin/timezone';
 import _debug from 'debug';
 
-dayjs.extend(utc);
-dayjs.extend(tz);
+import dayjs from '../util/dayjs';
+
+import type { Action, Season, State } from '../util/types';
 
 const debug = _debug('reducers:app');
-
-export type Season = 'WINTER' | 'SPRING' | 'SUMMER' | 'FALL';
-
-export interface Anime {
-    id?: number;
-    nativeTitle?: string;
-    romajiTitle?: string;
-    englishTitle?: string;
-    description?: string;
-    episodes?: number;
-    season?: Season;
-    year?: number;
-    nextEpisodeAiringAt?: number;
-    nextAiringEpisode?: number;
-    url?: string;
-    thumbnailExtraLarge?: string;
-    thumbnailLarge?: string;
-}
-
-export interface State {
-    anime: Anime[];
-    season: Season;
-    year: number;
-    seasonRange: string[];
-    timezone: string;
-    error?: Error;
-}
-
-export interface Action {
-    type: string;
-    payload?: unknown;
-}
 
 function reducer(state: State, action: Action): State {
     switch (action.type) {

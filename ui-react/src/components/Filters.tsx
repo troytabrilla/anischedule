@@ -1,5 +1,6 @@
 import type { ActionDispatch, ChangeEvent } from 'react';
-import type { State, Action } from '../reducers/app';
+
+import type { State, Action } from '../util/types';
 
 type Props = Pick<State, 'season' | 'year' | 'seasonRange'> & { dispatch: ActionDispatch<[Action]> };
 
