@@ -1,4 +1,7 @@
+import './Day.css';
+
 import Anime from './Anime';
+import getTitle from '../util/getTitle';
 
 import type { State, Anime as AnimeType } from '../util/types';
 
@@ -7,7 +10,7 @@ type Props = Pick<State, 'anime'> & { day: number };
 function Day({ anime, day }: Props) {
     return (
         <section className="day column centered">
-            <h2>{dayToString(day)}</h2>
+            <div className="header label column centered">{dayToString(day)}</div>
             {anime.sort(comparator).map((a) => (
                 <Anime key={a.id} anime={a} />
             ))}
@@ -16,7 +19,7 @@ function Day({ anime, day }: Props) {
 }
 
 function comparator(a: AnimeType, b: AnimeType) {
-    return (a.nextEpisodeAiringAt ?? 0) - (b.nextEpisodeAiringAt ?? 0);
+    return (a.nextEpisodeAiringAt ?? 0) - (b.nextEpisodeAiringAt ?? 0) || getTitle(a).localeCompare(getTitle(b));
 }
 
 function dayToString(day: number) {

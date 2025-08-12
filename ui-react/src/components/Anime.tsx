@@ -1,6 +1,7 @@
 import './Anime.css';
 
 import dayjs from '../util/dayjs';
+import getTitle from '../util/getTitle';
 
 import type { Anime as AnimeType } from '../util/types';
 
@@ -9,7 +10,7 @@ interface Props {
 }
 
 function Anime({ anime }: Props) {
-    const title = truncate(anime.englishTitle ?? anime.romajiTitle ?? anime.nativeTitle ?? '');
+    const title = truncate(getTitle(anime));
     const nextEpisodeAiringAt = anime.nextEpisodeAiringAt ? dayjs.unix(anime.nextEpisodeAiringAt) : null;
     return (
         <section className="anime column centered">

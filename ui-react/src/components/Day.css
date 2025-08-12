@@ -1,0 +1,9 @@
+.day {
+    min-width: calc(1 / 7 * 100vw - 1rem);
+}
+
+.day .header {
+    border: 1px solid grey;
+    min-width: calc(1 / 7 * 100vw - 1rem);
+    margin: 0.1rem;
+}
