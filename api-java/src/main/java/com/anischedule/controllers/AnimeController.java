@@ -38,10 +38,11 @@ public class AnimeController {
     public Map<String, Object> anime(
         @RequestParam(required = false) String season,
         @RequestParam(required = false) Integer year,
+        @RequestParam(required = false, defaultValue = "false") Boolean includeAdultContent,
         @RequestParam(required = false, defaultValue = "true") Boolean cached
     ) throws Exception {
         Season targetSeason = validateParams(season, year);
-        String cacheKey = getCacheKey(targetSeason);
+        String cacheKey = getCacheKey(targetSeason, includeAdultContent);
 
         if (cached == true) {
             Map<String, Object> cachedResults = cache.get(cacheKey);
@@ -50,7 +51,7 @@ public class AnimeController {
             }
         }
 
-        ArrayList<Anime> animeList = api.loadSeasonAnime(targetSeason);
+        ArrayList<Anime> animeList = api.loadSeasonAnime(targetSeason, includeAdultContent);
 
         Map<String, Object> results = new HashMap<>();
         results.put("anime", animeList);
@@ -76,8 +77,8 @@ public class AnimeController {
         return new Season(season, year);
     }
 
-    private String getCacheKey(Season season) {
-        return "anime|" + season.season() + "|" + season.year();
+    private String getCacheKey(Season season, boolean includeAdultContent) {
+        return "anime|" + season.season() + "|" + season.year() + "|" + includeAdultContent;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

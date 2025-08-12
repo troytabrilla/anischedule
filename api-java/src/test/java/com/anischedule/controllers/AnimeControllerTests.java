@@ -57,9 +57,9 @@ public class AnimeControllerTests {
         ));
         Map<String, Object> expected = new HashMap<>();
         expected.put("anime", anime);
-        Mockito.when(mockAnilistApi.loadSeasonAnime(season)).thenReturn(anime);
+        Mockito.when(mockAnilistApi.loadSeasonAnime(season, false)).thenReturn(anime);
 
-        Map<String, Object> actual = controller.anime(season.season(), season.year(), false);
+        Map<String, Object> actual = controller.anime(season.season(), season.year(), false, false);
 
         Assertions.assertEquals(expected, actual);
     }
@@ -67,15 +67,15 @@ public class AnimeControllerTests {
     @Test
     public void animeThrowsAPIException() throws Exception {
         Season season = new Season("SUMMER", 2025);
-        Mockito.when(mockAnilistApi.loadSeasonAnime(season)).thenThrow(new APIException("Invalid Format", Arrays.asList("No Data")));
+        Mockito.when(mockAnilistApi.loadSeasonAnime(season, false)).thenThrow(new APIException("Invalid Format", Arrays.asList("No Data")));
 
-        Exception actual = Assertions.assertThrows(APIException.class, () -> controller.anime(season.season(), season.year(), false));
+        Exception actual = Assertions.assertThrows(APIException.class, () -> controller.anime(season.season(), season.year(), false, false));
         Assertions.assertTrue(actual.toString().contains("Invalid Format - [No Data]"));
     }
 
     @Test
     public void animeThrowsBadRequestException() throws Exception {
-        Exception actual = Assertions.assertThrows(BadRequestException.class, () -> controller.anime("BAD", 1703, false));
+        Exception actual = Assertions.assertThrows(BadRequestException.class, () -> controller.anime("BAD", 1703, false, false));
         Assertions.assertTrue(actual.toString().contains("Invalid Season: BAD"));
     }
 
@@ -103,11 +103,11 @@ public class AnimeControllerTests {
         ));
         Map<String, Object> expected = new HashMap<>();
         expected.put("anime", anime);
-        Mockito.when(mockAnilistApi.loadSeasonAnime(season)).thenReturn(anime);
+        Mockito.when(mockAnilistApi.loadSeasonAnime(season, false)).thenReturn(anime);
         Mockito.when(mockCache.get(key)).thenReturn(null);
         Mockito.when(mockCache.set(key, expected)).thenReturn(true);
 
-        Map<String, Object> actual = controller.anime(season.season(), season.year(), true);
+        Map<String, Object> actual = controller.anime(season.season(), season.year(), false, true);
 
         Assertions.assertEquals(expected, actual);
         Mockito.verify(mockCache, Mockito.times(1)).get(key);
@@ -140,7 +140,7 @@ public class AnimeControllerTests {
         expected.put("anime", anime);
         Mockito.when(mockCache.get(key)).thenReturn(expected);
 
-        Map<String, Object> actual = controller.anime(season.season(), season.year(), true);
+        Map<String, Object> actual = controller.anime(season.season(), season.year(), false, true);
 
         Assertions.assertEquals(expected, actual);
         Mockito.verify(mockCache, Mockito.times(1)).get(key);

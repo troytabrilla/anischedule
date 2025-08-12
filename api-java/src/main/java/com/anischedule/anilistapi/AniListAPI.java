@@ -35,7 +35,7 @@ public class AniListAPI {
         this.client = client != null ? client : HttpClients.createDefault();
     }
 
-    public ArrayList<Anime> loadSeasonAnime(Season season) throws APIException, JsonProcessingException, IOException {
+    public ArrayList<Anime> loadSeasonAnime(Season season, boolean includeAdultContent) throws APIException, JsonProcessingException, IOException {
         ArrayList<Anime> animeList = new ArrayList<>();
 
         int currentPage = 1;
@@ -43,7 +43,7 @@ public class AniListAPI {
         do {
             JSONObject page = callAPI(season, currentPage);
 
-            processPage(page, animeList);
+            processPage(page, animeList, includeAdultContent);
 
             JSONObject pageInfo = page.getJSONObject("pageInfo");
             hasNextPage = pageInfo.isNull("hasNextPage") ? false : pageInfo.getBoolean("hasNextPage");
@@ -127,7 +127,7 @@ public class AniListAPI {
         return page;
     }
 
-    private void processPage(JSONObject page, ArrayList<Anime> animeList) {
+    private void processPage(JSONObject page, ArrayList<Anime> animeList, boolean includeAdultContent) {
         JSONArray media = page.getJSONArray("media");
         for (int i = 0; i < media.length(); i++) {
             JSONObject entry = media.getJSONObject(i);
@@ -138,6 +138,11 @@ public class AniListAPI {
                 continue;
             }
             JSONObject coverImage = entry.isNull("coverImage") ? null : entry.getJSONObject("coverImage");
+            Boolean isAdult = entry.isNull("isAdult") ? null : entry.getBoolean("isAdult");
+            // skip adult content unless flag is set
+            if (!includeAdultContent && isAdult == true) {
+                continue;
+            }
             Anime anime = new Anime(
                 entry.isNull("id") ? null : entry.getInt("id"),
                 title == null || title.isNull("native") ? null : title.getString("native"),

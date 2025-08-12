@@ -57,7 +57,7 @@ class AniListAPITests {
             false
         ));
 
-        ArrayList<Anime> actual = spy.loadSeasonAnime(season);
+        ArrayList<Anime> actual = spy.loadSeasonAnime(season, false);
 
         Assertions.assertEquals(expected, actual);
     }
@@ -71,7 +71,7 @@ class AniListAPITests {
 
         String expected = "Invalid Format";
 
-        Exception actual = Assertions.assertThrows(APIException.class, () -> spy.loadSeasonAnime(season));
+        Exception actual = Assertions.assertThrows(APIException.class, () -> spy.loadSeasonAnime(season, false));
         
         Assertions.assertTrue(actual.getMessage().contains(expected));
     }
@@ -85,7 +85,7 @@ class AniListAPITests {
 
         ArrayList<Anime> expected = new ArrayList<>();
 
-        ArrayList<Anime> actual = spy.loadSeasonAnime(season);
+        ArrayList<Anime> actual = spy.loadSeasonAnime(season, false);
 
         Assertions.assertEquals(expected, actual);
     }
