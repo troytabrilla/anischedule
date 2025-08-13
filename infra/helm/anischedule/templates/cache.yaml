@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache-service-{{ .Release.Name }}
+  labels:
+    app: cache
+spec:
+  selector:
+    app: cache
+  ports:
+  - port: {{ .Values.cache.port }}
+    targetPort: {{ .Values.cache.port }}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-deployment-{{ .Release.Name }}
+  labels:
+    app: cache
+spec:
+  replicas: {{ .Values.cache.replicas }}
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+    spec:
+      containers:
+      - name: cache-{{ .Release.Name }}
+        image: {{ .Values.cache.image.repository }}:{{ .Values.cache.image.tag }}
+        imagePullPolicy: {{ .Values.cache.image.pullPolicy }}
+        resources:
+          limits:
+            memory: {{ .Values.cache.limits.memory }}
+            cpu: {{ .Values.cache.limits.cpu }}
+          requests:
+            memory: {{ .Values.cache.requests.memory }}
+            cpu: {{ .Values.cache.requests.cpu }}
+        ports:
+        - containerPort: {{ .Values.cache.port }}

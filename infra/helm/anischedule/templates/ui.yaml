@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ui-service-{{ .Release.Name }}
+  labels:
+    app: ui
+spec:
+  selector:
+    app: ui
+  ports:
+    - port: {{ .Values.ui.port }}
+      targetPort: {{ .Values.ui.port }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui-deployment-{{ .Release.Name }}
+  labels:
+    app: ui
+spec:
+  replicas: {{ .Values.ui.replicas }}
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      containers:
+        - name: ui-{{ .Release.Name }}
+          image: {{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag }}
+          imagePullPolicy: {{ .Values.api.image.pullPolicy }}
+          resources:
+            limits:
+              memory: {{ .Values.ui.limits.memory }}
+              cpu: {{ .Values.ui.limits.cpu }}
+            requests:
+              memory: {{ .Values.ui.requests.memory }}
+              cpu: {{ .Values.ui.requests.cpu }}
+          ports:
+            - containerPort: {{ .Values.ui.port }}

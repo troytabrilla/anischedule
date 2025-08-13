@@ -1,0 +1,42 @@
+api:
+  image:
+    repository: docker.io/library/api-java
+    tag: 0.0.0
+    pullPolicy: Never
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+  requests:
+    memory: "128Mi"
+    cpu: "250m"
+  port: 8080
+  replicas: 1
+  version: v1
+
+cache:
+  image:
+    repository: redis
+    tag: 8.2
+    pullPolicy: IfNotPresent
+  limits:
+    memory: "1024Mi"
+    cpu: "1000m"
+  requests:
+    memory: "128Mi"
+    cpu: "250m"
+  port: 6379
+  replicas: 1
+
+ui:
+  image:
+    repository: docker.io/library/ui-react
+    tag: 0.0.0
+    pullPolicy: Never
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+  requests:
+    memory: "128Mi"
+    cpu: "250m"
+  port: 3000
+  replicas: 1

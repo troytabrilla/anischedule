@@ -21,7 +21,7 @@ spec:
                 name: api-service
                 port:
                   number: 8080
-# @note Bugfix for KIC hasn't been released as of 2025-08-12: https://github.com/kubernetes/minikube/pull/19002
+# @note Bugfix for KIC in Minikube hasn't been released as of 2025-08-12: https://github.com/kubernetes/minikube/pull/19002
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
