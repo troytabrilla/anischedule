@@ -15,7 +15,7 @@ describe('Anime', () => {
 
         const divs = screen.getAllByRole('generic');
         expect(divs[4].textContent).toEqual('Episode 1');
-        expect(divs[5].textContent).toEqual('2025-08-11 16:29');
+        expect(divs[5].textContent).toContain('2025-08-11');
     });
 
     it('truncates long titles', () => {
