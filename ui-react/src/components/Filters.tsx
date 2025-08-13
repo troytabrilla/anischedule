@@ -14,6 +14,7 @@ function Filters({ season, year, seasonRange, includeAdultContent, dispatch }: P
         const [newSeason, newYear] = e.target.value.split(' ');
         dispatch({ type: 'season', payload: { season: newSeason, year: newYear } });
     };
+    const adultContentFilterEnabled = localStorage.getItem('feature-flag:enable-adult-content-filter') === 'true';
     const handleAdultContentChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newIncludeAdultContent = e.target.checked;
         dispatch({ type: 'includeAdultContent', payload: { includeAdultContent: newIncludeAdultContent } });
@@ -32,17 +33,19 @@ function Filters({ season, year, seasonRange, includeAdultContent, dispatch }: P
                     ))}
                 </select>
             </fieldset>
-            <fieldset className="filter">
-                <label htmlFor="includeAdultContent" className="label small row centered">
-                    Include Adult Content
-                    <input
-                        id="includeAdultContent"
-                        type="checkbox"
-                        defaultChecked={includeAdultContent}
-                        onChange={handleAdultContentChange}
-                    />
-                </label>
-            </fieldset>
+            {adultContentFilterEnabled && (
+                <fieldset className="filter">
+                    <label htmlFor="includeAdultContent" className="label small row centered">
+                        Include Adult Content
+                        <input
+                            id="includeAdultContent"
+                            type="checkbox"
+                            defaultChecked={includeAdultContent}
+                            onChange={handleAdultContentChange}
+                        />
+                    </label>
+                </fieldset>
+            )}
         </section>
     );
 }

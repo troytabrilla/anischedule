@@ -5,6 +5,8 @@ import Filters from '../../src/components/Filters';
 
 describe('Filters', () => {
     it('renders', () => {
+        localStorage.setItem('feature-flag:enable-adult-content-filter', 'true');
+
         const season = 'SUMMER';
         const year = 2025;
         const seasonRange = ['SPRING 2025', 'SUMMER 2025', 'FALL 2025'];
@@ -49,6 +51,8 @@ describe('Filters', () => {
     });
 
     it('dispatches adult content change', async () => {
+        localStorage.setItem('feature-flag:enable-adult-content-filter', 'true');
+
         const season = 'SUMMER';
         const year = 2025;
         const seasonRange = ['SPRING 2025', 'SUMMER 2025', 'FALL 2025'];

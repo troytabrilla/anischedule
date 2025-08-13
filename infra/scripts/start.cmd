@@ -1,9 +1,10 @@
 @rem start minikube
 minikube start
+minikube addons enable ingress
 
 @rem build images
 docker build -t api-java:0.0.0 %cd%\api-java
-docker build -t ui-react:0.0.0 %cd%\ui-react
+docker build --build-arg VITE_BASE_API_URL=http://localhost -t ui-react:0.0.0 %cd%\ui-react
 
 @rem load images to minikube
 minikube image load api-java:0.0.0
@@ -15,4 +16,4 @@ kubectl apply -f %cd%\infra\k8s
 kubectl get all -o wide
 
 @rem expose ingress
-echo "TODO expose ingress for services"
+minikube tunnel

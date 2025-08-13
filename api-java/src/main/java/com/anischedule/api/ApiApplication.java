@@ -1,5 +1,8 @@
 package com.anischedule.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,12 +21,14 @@ public class ApiApplication {
     private final String[] allowedOrigins = new String[]{
         "http://localhost:5173", // vite dev server
         "http://localhost:3000", // nginx server
-        "http://localhost:8000", // kong gateway proxy
+        "http://localhost:80", // nginx gateway proxy
     };
 
     @GetMapping("/api/v1")
-    public String home() {
-        return "AniSchedule API";
+    public Map<String, String> home() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "AniSchedule API");
+        return response;
     }
 
     @Bean

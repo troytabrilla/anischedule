@@ -1,5 +1,8 @@
 package com.anischedule.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,9 +25,10 @@ class ApiApplicationTests {
 
     @Test
     public void homeLoads() {
-        String expected = "AniSchedule API";
+        Map<String, String> expected = new HashMap<>();
+        expected.put("message", "AniSchedule API");
 
-        String actual = app.home();
+        Map<String, String> actual = app.home();
 
         Assertions.assertEquals(expected, actual);
     }
