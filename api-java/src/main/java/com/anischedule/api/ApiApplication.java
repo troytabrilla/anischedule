@@ -21,7 +21,8 @@ public class ApiApplication {
     private final String[] allowedOrigins = new String[]{
         "http://localhost:5173", // vite dev server
         "http://localhost:3000", // nginx server
-        "http://localhost:80", // nginx gateway proxy
+        "http://localhost:8000", // kong gateway proxy
+        "http://localhost:80", // minikube gateway proxy
     };
 
     @GetMapping("/api/v1")

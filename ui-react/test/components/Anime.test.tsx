@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import Anime from '../../src/components/Anime';
 import { Anime as AnimeType } from '../../src/util/types';
-import { mockAnime } from '../mockData';
+import { anime as mockAnime } from '../data/anime';
 
 describe('Anime', () => {
     it('renders', () => {

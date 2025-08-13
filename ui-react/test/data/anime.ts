@@ -1,6 +1,6 @@
-import { Anime } from '../src/util/types';
+import { Anime } from '../../src/util/types';
 
-export const mockAnime: Anime[] = [
+export const anime: Anime[] = [
     {
         id: 1,
         nativeTitle: 'タイトル1',

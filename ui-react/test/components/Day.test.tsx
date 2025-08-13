@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 import Day from '../../src/components/Day';
 import { Anime as AnimeType } from '../../src/util/types';
-import { mockAnime } from '../mockData';
+import { anime as mockAnime } from '../data/anime';
 
 describe('Day', () => {
     it('renders', () => {

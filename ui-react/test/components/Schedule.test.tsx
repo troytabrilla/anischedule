@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
 import Schedule from '../../src/components/Schedule';
-import { mockAnime } from '../mockData';
+import { anime as mockAnime } from '../data/anime';
 
 describe('Schedule', () => {
     it('renders', () => {
