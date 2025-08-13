@@ -1,5 +1,5 @@
-@rem delete configs
-kubectl delete -f %cd%\infra\k8s
+@rem uninstall local app
+helm uninstall local
 
 @rem delete minikube
 minikube stop

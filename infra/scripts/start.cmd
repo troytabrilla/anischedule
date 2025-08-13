@@ -11,9 +11,13 @@ minikube image load api-java:0.0.0
 minikube image load ui-react:0.0.0
 minikube image ls
 
-@rem apply configs
-kubectl apply -f %cd%\infra\k8s
+@rem install app locally
+helm install local %cd%\infra\helm\anischedule --values %cd%\infra\helm\anischedule\values.yaml
 kubectl get all -o wide
+
+@rem wait for gateway to get IP address
+kubectl wait --for=jsonpath="{.status.loadBalancer.ingress}" ingress/gateway-local --timeout=120s
+kubectl get ingress
 
 @rem expose ingress
 minikube tunnel
