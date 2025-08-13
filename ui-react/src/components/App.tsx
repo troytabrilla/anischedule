@@ -25,6 +25,14 @@ function App() {
                 throw error;
             });
         toastify(promise, `${state.season}|${state.year}|${state.includeAdultContent}`);
+        localStorage.setItem(
+            'filters',
+            JSON.stringify({
+                season: state.season,
+                year: state.year,
+                includeAdultContent: state.includeAdultContent,
+            })
+        );
     }, [state.season, state.year, state.includeAdultContent]);
 
     return (

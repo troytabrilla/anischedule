@@ -51,6 +51,15 @@ export function initialState(): State {
     const now = dayjs();
     const month = now.month();
     const year = now.year();
+    const filters = localStorage.getItem('filters');
+    let partial = {};
+    if (filters) {
+        try {
+            partial = JSON.parse(filters ?? '');
+        } catch (err) {
+            debug(err);
+        }
+    }
     return {
         anime: [],
         season: monthToSeason(month),
@@ -60,6 +69,7 @@ export function initialState(): State {
         includeAdultContent: false,
         loading: true,
         error: null,
+        ...partial,
     };
 }
 
