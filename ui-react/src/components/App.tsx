@@ -1,7 +1,7 @@
 import './App.css';
 
 import { useReducer, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 import reducer, { initialState } from '../reducers/app';
 import fetchAnime from '../util/fetchAnime';
@@ -9,7 +9,6 @@ import fetchAnime from '../util/fetchAnime';
 import Header from './Header';
 import Filters from './Filters';
 import Schedule from './Schedule';
-import Toast from './Toast';
 import Footer from './Footer';
 
 function App() {
@@ -28,7 +27,7 @@ function App() {
     return (
         <>
             <Header />
-            <main className="app column centered">
+            <main className="main column centered">
                 <Filters
                     season={state.season}
                     year={state.year}
@@ -36,8 +35,8 @@ function App() {
                     includeAdultContent={state.includeAdultContent}
                     dispatch={dispatch}
                 />
-                <Schedule anime={state.anime} timezone={state.timezone} />
-                <Toast />
+                <Schedule anime={state.anime} />
+                <ToastContainer className="toast" position="top-center" limit={1} autoClose={3000} />
             </main>
             <Footer />
         </>

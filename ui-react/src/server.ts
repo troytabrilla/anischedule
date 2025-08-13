@@ -22,3 +22,5 @@ app.get('/', (_, res) => {
 app.listen(port, () => {
     debug(`Listening on port ${port}`);
 });
+
+// TODO add dockerfile

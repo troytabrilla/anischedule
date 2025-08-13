@@ -5,11 +5,6 @@ body {
     font-family: 'Calibri', Arial, Helvetica, sans-serif;
 }
 
-#root {
-    height: calc(100% - 2rem);
-    padding: 1rem;
-}
-
 .row {
     display: flex;
     flex-flow: row;

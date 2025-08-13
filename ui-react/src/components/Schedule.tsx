@@ -3,7 +3,7 @@ import Day from './Day';
 
 import type { Anime, State } from '../util/types';
 
-type Props = Pick<State, 'anime' | 'timezone'>;
+type Props = Pick<State, 'anime'>;
 
 function Schedule({ anime }: Props) {
     return (

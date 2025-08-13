@@ -14,20 +14,20 @@ function Anime({ anime }: Props) {
     const nextEpisodeAiringAt = anime.nextEpisodeAiringAt ? dayjs.unix(anime.nextEpisodeAiringAt) : null;
     return (
         <section className="anime column centered">
-            <div>
+            <div className="thumbnail">
                 {anime.thumbnailLarge && (
                     <a href={anime.url} target="_blank">
                         <img src={anime.thumbnailLarge} height="120px" alt={title} />
                     </a>
                 )}
             </div>
-            <div>
+            <div className="title">
                 <a href={anime.url} target="_blank">
                     {title}
                 </a>
             </div>
-            <div>Episode {anime.nextAiringEpisode}</div>
-            <div>{nextEpisodeAiringAt?.format('YYYY-MM-DD HH:mm')}</div>
+            <div className="nextAiringEpisode">Episode {anime.nextAiringEpisode}</div>
+            <div className="nextEpisodeAiringAt">{nextEpisodeAiringAt?.format('YYYY-MM-DD HH:mm')}</div>
         </section>
     );
 }
