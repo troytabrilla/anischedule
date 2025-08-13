@@ -20,6 +20,8 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "24"
+          cache: "maven"
+          cache-dependency-path: ./api-java/pom.xml
 
       - name: Make mvnw executable
         working-directory: ./api-java
@@ -36,9 +38,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install node for Act workaround (https://github.com/nektos/act/issues/973)
-        if: ${{ env.ACT }}
-        run: apt update && apt install -y nodejs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 23
+          cache: "npm"
+          cache-dependency-path: ./ui-react/package-lock.json
 
       - name: Install npm dependencies
         working-directory: ./ui-react
