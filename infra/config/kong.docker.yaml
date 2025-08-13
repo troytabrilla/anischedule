@@ -1,0 +1,15 @@
+_format_version: "3.0"
+
+services:
+  - name: api-service
+    url: http://host.docker.internal:8080/api/v1
+    routes:
+      - name: api-route
+        paths:
+          - /api/v1
+  - name: ui-service
+    url: http://host.docker.internal:3000
+    routes:
+      - name: ui-route
+        paths:
+          - /

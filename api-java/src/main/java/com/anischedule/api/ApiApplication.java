@@ -16,8 +16,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class ApiApplication {
 
     private final String[] allowedOrigins = new String[]{
-        "http://localhost:5173", // vite server
-        "http://localhost:3000" // express server
+        "http://localhost:5173", // vite dev server
+        "http://localhost:3000", // nginx server
+        "http://localhost:8000", // kong gateway proxy
     };
 
     @GetMapping("/api/v1")
