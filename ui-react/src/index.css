@@ -5,6 +5,10 @@ body {
     font-family: 'Calibri', Arial, Helvetica, sans-serif;
 }
 
+fieldset {
+    border: 0;
+}
+
 .row {
     display: flex;
     flex-flow: row;
