@@ -82,7 +82,7 @@ public class AnimeControllerTests {
     @Test
     public void animeCachesResults() throws Exception {
         Season season = new Season("SUMMER", 2025);
-        String key = "anime|SUMMER|2025";
+        String key = "anime|SUMMER|2025|false";
 
         ArrayList<Anime> anime = new ArrayList<>();
         anime.add(new Anime(
@@ -117,7 +117,7 @@ public class AnimeControllerTests {
     @Test
     public void animeReturnsCachedResults() throws Exception {
         Season season = new Season("SUMMER", 2025);
-        String key = "anime|SUMMER|2025";
+        String key = "anime|SUMMER|2025|false";
 
         ArrayList<Anime> anime = new ArrayList<>();
         anime.add(new Anime(

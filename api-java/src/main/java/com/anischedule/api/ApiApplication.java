@@ -20,7 +20,7 @@ public class ApiApplication {
         "http://localhost:3000" // express server
     };
 
-    @GetMapping("/")
+    @GetMapping("/api/v1")
     public String home() {
         return "AniSchedule API";
     }
@@ -30,8 +30,8 @@ public class ApiApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/").allowedOrigins(allowedOrigins);
-                registry.addMapping("/anime").allowedOrigins(allowedOrigins);
+                registry.addMapping("/api/v1").allowedOrigins(allowedOrigins);
+                registry.addMapping("/api/v1/anime").allowedOrigins(allowedOrigins);
             }
         };
     }

@@ -34,7 +34,7 @@ public class AnimeController {
         this.cache = cache != null ? cache : new APICache();
     }
 
-    @GetMapping("/anime")
+    @GetMapping("/api/v1/anime")
     public Map<String, Object> anime(
         @RequestParam(required = false) String season,
         @RequestParam(required = false) Integer year,
