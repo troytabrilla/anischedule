@@ -16,7 +16,10 @@ function App() {
 
     useEffect(() => {
         const promise = fetchAnime(state.season, state.year, state.includeAdultContent)
-            .then((data) => dispatch({ type: 'anime', payload: data }))
+            .then((data) => {
+                dispatch({ type: 'anime', payload: data });
+                toast.dismiss();
+            })
             .catch((error) => {
                 dispatch({ type: 'error', payload: { error } });
                 throw error;
@@ -36,7 +39,13 @@ function App() {
                     dispatch={dispatch}
                 />
                 <Schedule anime={state.anime} />
-                <ToastContainer className="toast" position="top-center" limit={1} autoClose={3000} />
+                <ToastContainer
+                    className="toast"
+                    position="top-center"
+                    limit={1}
+                    autoClose={5000}
+                    pauseOnFocusLoss={false}
+                />
             </main>
             <Footer />
         </>
