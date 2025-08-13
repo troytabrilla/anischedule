@@ -1,16 +1,16 @@
 services:
   api:
     build:
-      context: ../api-java
-      dockerfile: ../api-java/Dockerfile
+      context: ../../api-java
+      dockerfile: ../../api-java/Dockerfile
     ports:
       - 8080:8080
     environment:
       REDIS_URL: redis://host.docker.internal:6379
   ui:
     build:
-      context: ../ui-react
-      dockerfile: ../ui-react/Dockerfile
+      context: ../../ui-react
+      dockerfile: ../../ui-react/Dockerfile
     ports:
       - 3000:3000
     environment:
