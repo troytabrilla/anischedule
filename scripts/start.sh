@@ -13,10 +13,10 @@ minikube image ls
 
 # install app locally
 helm install local $(pwd)/infra/helm/anischedule --values $(pwd)/infra/helm/anischedule/values.yaml
-kubectl get all -o wide
 
-# wait for gateway to get IP address
-kubectl wait --for=jsonpath="{.status.loadBalancer.ingress}" ingress/gateway-local --timeout=120s
+# wait for ingress to get IP address
+kubectl wait --for=jsonpath="{.status.loadBalancer.ingress}" ingress/ingress-local --timeout=120s
+kubectl get all -o wide
 kubectl get ingress
 
 # expose ingress

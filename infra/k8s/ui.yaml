@@ -32,6 +32,8 @@ spec:
         - name: ui
           image: docker.io/library/ui-react:0.0.0
           imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
           resources:
             limits:
               memory: "512Mi"
@@ -39,5 +41,3 @@ spec:
             requests:
               memory: "128Mi"
               cpu: "250m"
-          ports:
-            - containerPort: 3000

@@ -8,11 +8,10 @@ spec:
   selector:
     app: cache
   ports:
-  - port: 6379
-    targetPort: 6379
+    - port: 6379
+      targetPort: 6379
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,14 +29,14 @@ spec:
         app: cache
     spec:
       containers:
-      - name: redis
-        image: redis:8.2
-        resources:
-          limits:
-            memory: "1024Mi"
-            cpu: "1000m"
-          requests:
-            memory: "128Mi"
-            cpu: "250m"
-        ports:
-        - containerPort: 6379
+        - name: redis
+          image: redis:8.2
+          ports:
+            - containerPort: 6379
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"

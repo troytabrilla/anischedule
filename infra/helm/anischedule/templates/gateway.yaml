@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service-{{ .Release.Name }}
+  labels:
+    app: gateway
+spec:
+  selector:
+    app: gateway
+  ports:
+    - name: web
+      port: {{ .Values.gateway.port }}
+      targetPort: {{ .Values.gateway.targetPort }}
+    - name: admin
+      port: 8001
+      targetPort: 8001
+    - name: admin-ui
+      port: 8002
+      targetPort: 8002
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-configmap-{{ .Release.Name }}
+data:
+  kong.yaml: |
+    _format_version: "3.0"
+    _transform: true
+
+    services:
+      - host: ui-service-{{ .Release.Name }}.default.svc.cluster.local
+        name: ui-service-{{ .Release.Name }}
+        port: {{ .Values.ui.port }}
+        protocol: http
+        routes:
+          - name: index
+            paths:
+              - /
+        plugins:
+          - name: rate-limiting
+            config:
+              minute: {{ .Values.ui.ratelimit.minute }}
+              policy: local
+      - host: api-service-{{ .Release.Name }}.default.svc.cluster.local
+        name: api-service-{{ .Release.Name }}
+        port: {{ .Values.api.port }}
+        protocol: http
+        routes:
+          - name: api
+            paths:
+              - /api/{{ .Values.api.version }}
+            strip_path: false
+        plugins:
+          - name: rate-limiting
+            config:
+              minute: {{ .Values.api.ratelimit.minute }}
+              policy: local
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment-{{ .Release.Name }}
+  labels:
+    app: gateway
+spec:
+  replicas: {{ .Values.gateway.replicas }}
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway-{{ .Release.Name }}
+          image: {{ .Values.gateway.image.repository }}:{{ .Values.gateway.image.tag }}
+          imagePullPolicy: {{ .Values.gateway.image.pullPolicy }}
+          env:
+            - name: KONG_DATABASE
+              value: "off"
+            - name: KONG_DECLARATIVE_CONFIG
+              value: /kong/declarative/kong.yaml
+            - name: KONG_PROXY_ACCESS_LOG
+              value: /dev/stdout
+            - name: KONG_ADMIN_ACCESS_LOG
+              value: /dev/stdout
+            - name: KONG_PROXY_ERROR_LOG
+              value: /dev/stderr
+            - name: KONG_ADMIN_ERROR_LOG
+              value: /dev/stderr
+            - name: KONG_ADMIN_LISTEN
+              value: 0.0.0.0:8001
+            - name: KONG_ADMIN_GUI_URL
+              value: http://localhost:8002
+          ports:
+            - containerPort: {{ .Values.gateway.targetPort }}
+            - containerPort: 8001
+            - containerPort: 8002
+          resources:
+            limits:
+                memory: {{ .Values.gateway.limits.memory }}
+                cpu: {{ .Values.gateway.limits.cpu }}
+            requests:
+                memory: {{ .Values.gateway.requests.memory }}
+                cpu: {{ .Values.gateway.requests.cpu }}
+          volumeMounts:
+            - name: kong-declarative-config
+              mountPath: /kong/declarative
+      volumes:
+        - name: kong-declarative-config
+          configMap:
+            name: gateway-configmap-{{ .Release.Name }}
