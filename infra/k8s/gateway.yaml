@@ -7,10 +7,9 @@ metadata:
 spec:
   selector:
     app: gateway
-  type: LoadBalancer
   ports:
-    - name: web
-      port: 8000
+    - name: http
+      port: 80
       targetPort: 8000
     - name: admin
       port: 8001
@@ -50,12 +49,12 @@ data:
         routes:
           - name: api
             paths:
-              - /api/v1
-            strip_path: false
+              - /schedule/api
+            strip_path: true
         plugins:
           - name: rate-limiting
             config:
-              minute: 2
+              minute: 10
               policy: local
 
 ---
@@ -102,11 +101,11 @@ spec:
             - containerPort: 8002
           resources:
             limits:
-              memory: "1024Mi"
+              memory: "2048Mi"
               cpu: "2000m"
             requests:
-              memory: "512Mi"
-              cpu: "2000m"
+              memory: "1024Mi"
+              cpu: "1000m"
           volumeMounts:
             - name: kong-declarative-config
               mountPath: /kong/declarative

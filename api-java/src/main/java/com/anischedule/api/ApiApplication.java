@@ -24,7 +24,7 @@ public class ApiApplication {
         exists(BASE_UI_URL) ? BASE_UI_URL.trim() : "http://localhost:5173", // default vite dev server
     };
 
-    @GetMapping("/api/v1")
+    @GetMapping("/v1")
     public Map<String, String> home() {
         Map<String, String> response = new HashMap<>();
         response.put("message", "AniSchedule API");
@@ -37,7 +37,7 @@ public class ApiApplication {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 System.out.println("Allowed origins: " + Arrays.toString(allowedOrigins));
-                registry.addMapping("/api/**").allowedOrigins(allowedOrigins);
+                registry.addMapping("/v1/**").allowedOrigins(allowedOrigins);
             }
         };
     }

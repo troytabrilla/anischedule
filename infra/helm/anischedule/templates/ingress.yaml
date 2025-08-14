@@ -14,17 +14,3 @@ spec:
                 name: gateway-service-{{ .Release.Name }}
                 port:
                   number: {{ .Values.gateway.port }}
-          # - path: /
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: ui-service-{{ .Release.Name }}
-          #       port:
-          #         number: {{ .Values.ui.port }}
-          # - path: /api/{{ .Values.api.version }}
-          #   pathType: Prefix
-          #   backend:
-          #     service:
-          #       name: api-service-{{ .Release.Name }}
-          #       port:
-          #         number: {{ .Values.api.port }}

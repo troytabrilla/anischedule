@@ -1,25 +1,4 @@
 apiVersion: v1
-kind: Service
-metadata:
-  name: gateway-service-{{ .Release.Name }}
-  labels:
-    app: gateway
-spec:
-  selector:
-    app: gateway
-  ports:
-    - name: web
-      port: {{ .Values.gateway.port }}
-      targetPort: {{ .Values.gateway.targetPort }}
-    - name: admin
-      port: 8001
-      targetPort: 8001
-    - name: admin-ui
-      port: 8002
-      targetPort: 8002
-
----
-apiVersion: v1
 kind: ConfigMap
 metadata:
   name: gateway-configmap-{{ .Release.Name }}
@@ -42,22 +21,45 @@ data:
             config:
               minute: {{ .Values.ui.rate_limit.minute }}
               policy: local
-      - host: api-service-{{ .Release.Name }}.default.svc.cluster.local
-        name: api-service-{{ .Release.Name }}
-        port: {{ .Values.api.port }}
+      - host: schedule-api-service-{{ .Release.Name }}.default.svc.cluster.local
+        name: schedule-api-service-{{ .Release.Name }}
+        port: {{ .Values.schedule_api.port }}
         protocol: http
         routes:
-          - name: api
+          - name: schedule-api
             paths:
-              - /api/{{ .Values.api.version }}
-            strip_path: false
+              - {{ .Values.schedule_api.path }}
+            strip_path: true
         plugins:
           - name: rate-limiting
             config:
-              minute: {{ .Values.api.rate_limit.minute }}
+              minute: {{ .Values.schedule_api.rate_limit.minute }}
               policy: local
 
 ---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service-{{ .Release.Name }}
+  labels:
+    app: gateway
+spec:
+  selector:
+    app: gateway
+  ports:
+    - name: http
+      port: {{ .Values.gateway.port }}
+      targetPort: {{ .Values.gateway.targetPort }}
+    - name: admin
+      port: 8001
+      targetPort: 8001
+    - name: admin-ui
+      port: 8002
+      targetPort: 8002
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:

@@ -6,13 +6,15 @@ services:
       - 8080:8080
     environment:
       REDIS_URL: redis://host.docker.internal:6379
+      BASE_UI_URL: http://localhost:8000
   ui:
     build:
       context: ../../ui-react
+      args:
+        VITE_BASE_API_URL: http://localhost:8000
+        VITE_SCHEDULE_API_PATH: /schedule/api/v1
     ports:
       - 3000:3000
-    environment:
-      VITE_BASE_API_URL: http://localhost:8080
   cache:
     image: redis:latest
     ports:
@@ -20,17 +22,15 @@ services:
   gateway:
     image: kong:latest
     volumes:
-      - ../config/kong.docker.yaml:/usr/local/kong/declarative/kong.yaml
+      - ../config/kong.docker.yaml:/kong/declarative/kong.yaml
     environment:
       - KONG_DATABASE=off
-      - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yaml
+      - KONG_DECLARATIVE_CONFIG=/kong/declarative/kong.yaml
       - KONG_PROXY_ACCESS_LOG=/dev/stdout
       - KONG_ADMIN_ACCESS_LOG=/dev/stdout
       - KONG_PROXY_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_ERROR_LOG=/dev/stderr
-      - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001
     ports:
       - 8000:8000
-      - 8443:8443
       - 8001:8001
-      - 8444:8444

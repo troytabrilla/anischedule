@@ -1,4 +1,4 @@
-api:
+schedule_api:
   image:
     repository: docker.io/library/api-java
     tag: "0.0.0"
@@ -13,7 +13,7 @@ api:
   replicas: 1
   rate_limit:
     minute: 25
-  version: v1
+  path: /schedule/api
   base_ui_url: http://localhost
 
 cache:
