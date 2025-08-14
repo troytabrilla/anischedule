@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.anischedule</groupId>
-    <artifactId>api-java</artifactId>
+    <artifactId>schedule-api-java</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>api-java</name>
-    <description>API service for AniSchedule</description>
+    <name>schedule-api-java</name>
+    <description>Microservice for AniSchedule schedule API</description>
     <url/>
     <licenses>
         <license/>

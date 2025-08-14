@@ -9,8 +9,8 @@ on:
       - "main"
 
 jobs:
-  test-api-java:
-    name: Test API (Java)
+  test-schedule-api-java:
+    name: Test Schedule API (Java)
     runs-on: ubuntu-latest
 
     steps:
@@ -21,14 +21,14 @@ jobs:
           distribution: "temurin"
           java-version: "24"
           cache: "maven"
-          cache-dependency-path: ./api-java/pom.xml
+          cache-dependency-path: ./schedule-api-java/pom.xml
 
       - name: Make mvnw executable
-        working-directory: ./api-java
+        working-directory: ./schedule-api-java
         run: chmod +x mvnw
 
       - name: Run tests
-        working-directory: ./api-java
+        working-directory: ./schedule-api-java
         run: ./mvnw clean test
 
   test-ui-react:

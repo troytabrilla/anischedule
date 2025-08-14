@@ -42,8 +42,8 @@ data:
             config:
               minute: 100
               policy: local
-      - host: api-service.default.svc.cluster.local
-        name: api-service
+      - host: schedule-api-service.default.svc.cluster.local
+        name: schedule-api-service
         port: 8080
         protocol: http
         routes:

@@ -1,6 +1,6 @@
 schedule_api:
   image:
-    repository: docker.io/library/api-java
+    repository: docker.io/library/schedule-api-java
     tag: "0.0.0"
     pullPolicy: Never
   limits:

@@ -1,10 +1,10 @@
 _format_version: "3.0"
 
 services:
-  - name: api-service
+  - name: schedule-api-service
     url: http://host.docker.internal:8080/v1
     routes:
-      - name: api-route
+      - name: schedule-api-route
         paths:
           - /schedule/api/v1
   - name: ui-service

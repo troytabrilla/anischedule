@@ -1,4 +1,4 @@
-call cd ./api-java
+call cd ./schedule-api-java
 call ./mvnw clean test
 
 call cd ../ui-react
