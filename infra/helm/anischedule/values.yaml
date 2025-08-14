@@ -1,21 +1,3 @@
-schedule_api:
-  image:
-    repository: docker.io/library/schedule-api-java
-    tag: "0.0.0"
-    pullPolicy: Never
-  limits:
-    memory: "1024Mi"
-    cpu: "1000m"
-  requests:
-    memory: "128Mi"
-    cpu: "250m"
-  port: 8080
-  replicas: 1
-  rate_limit:
-    minute: 25
-  path: /schedule/api
-  base_ui_url: http://localhost
-
 cache:
   image:
     repository: redis
@@ -45,9 +27,27 @@ gateway:
   targetPort: 8000
   replicas: 1
 
+schedule_api:
+  image:
+    repository: ""
+    tag: "0.0.0"
+    pullPolicy: Never
+  limits:
+    memory: "1024Mi"
+    cpu: "1000m"
+  requests:
+    memory: "128Mi"
+    cpu: "250m"
+  port: 8080
+  replicas: 1
+  rate_limit:
+    minute: 25
+  path: /schedule/api
+  base_ui_url: http://localhost
+
 ui:
   image:
-    repository: docker.io/library/ui-react
+    repository: ""
     tag: "0.0.0"
     pullPolicy: Never
   limits:

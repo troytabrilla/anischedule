@@ -1,3 +1,5 @@
+{{- $repository := .Values.schedule_api.image.repository | required ".Values.schedule_api.image.repository is required." -}}
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -30,7 +32,7 @@ spec:
     spec:
       containers:
         - name: schedule-api-{{ .Release.Name }}
-          image: {{ .Values.schedule_api.image.repository }}:{{ .Values.schedule_api.image.tag }}
+          image: {{ $repository }}:{{ .Values.schedule_api.image.tag }}
           imagePullPolicy: {{ .Values.schedule_api.image.pullPolicy }}
           env:
             - name: REDIS_URL

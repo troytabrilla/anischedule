@@ -1,0 +1,7 @@
+schedule_api:
+  image:
+    repository: docker.io/library/schedule-api-java
+
+ui:
+  image:
+    repository: docker.io/library/ui-react

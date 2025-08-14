@@ -12,7 +12,7 @@ minikube image load ui-react:0.0.0
 minikube image ls
 
 # install app locally
-helm install local $(pwd)/infra/helm/anischedule --values $(pwd)/infra/helm/anischedule/values.yaml
+helm install local $(pwd)/infra/helm/anischedule --values $(pwd)/infra/helm/anischedule/values/java-react.yaml
 
 # wait for ingress to get IP address
 kubectl wait --for=jsonpath="{.status.loadBalancer.ingress}" ingress/ingress-local --timeout=120s
