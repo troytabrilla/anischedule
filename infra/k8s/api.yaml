@@ -35,6 +35,8 @@ spec:
           env:
             - name: REDIS_URL
               value: redis://cache-service.default.svc.cluster.local:6379
+            - name: BASE_UI_URL
+              value: http://localhost:3000
           ports:
             - containerPort: 8080
           resources:

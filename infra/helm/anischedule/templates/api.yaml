@@ -35,6 +35,8 @@ spec:
           env:
             - name: REDIS_URL
               value: redis://cache-service-{{ .Release.Name }}.default.svc.cluster.local:6379
+            - name: BASE_UI_URL
+              value: {{ .Values.api.base_ui_url }}
           resources:
             limits:
               memory: {{ .Values.api.limits.memory }}

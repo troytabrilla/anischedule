@@ -1,5 +1,6 @@
 package com.anischedule.api;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,12 +19,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan(basePackages = "com.anischedule")
 public class ApiApplication {
 
+    private final static String BASE_UI_URL = System.getenv("BASE_UI_URL");
     private final String[] allowedOrigins = new String[]{
-        "http://localhost:5173", // vite dev server
-        "http://localhost:3000", // nginx server
-        "http://localhost:8000", // kong gateway proxy
-        "http://localhost:80", // minikube gateway proxy
-        "http://localhost", // minikube gateway proxy
+        exists(BASE_UI_URL) ? BASE_UI_URL.trim() : "http://localhost:5173", // default vite dev server
     };
 
     @GetMapping("/api/v1")
@@ -38,10 +36,14 @@ public class ApiApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
-                registry.addMapping("/api/v1").allowedOrigins(allowedOrigins);
-                registry.addMapping("/api/v1/anime").allowedOrigins(allowedOrigins);
+                System.out.println("Allowed origins: " + Arrays.toString(allowedOrigins));
+                registry.addMapping("/api/**").allowedOrigins(allowedOrigins);
             }
         };
+    }
+
+    private boolean exists(String s) {
+        return s != null && !s.isBlank();
     }
 
     public static void main(String[] args) {

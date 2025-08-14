@@ -11,9 +11,10 @@ api:
     cpu: "250m"
   port: 8080
   replicas: 1
-  ratelimit:
+  rate_limit:
     minute: 25
   version: v1
+  base_ui_url: http://localhost
 
 cache:
   image:
@@ -57,5 +58,5 @@ ui:
     cpu: "250m"
   port: 3000
   replicas: 1
-  ratelimit:
+  rate_limit:
     minute: 100

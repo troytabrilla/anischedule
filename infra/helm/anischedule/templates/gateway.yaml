@@ -40,7 +40,7 @@ data:
         plugins:
           - name: rate-limiting
             config:
-              minute: {{ .Values.ui.ratelimit.minute }}
+              minute: {{ .Values.ui.rate_limit.minute }}
               policy: local
       - host: api-service-{{ .Release.Name }}.default.svc.cluster.local
         name: api-service-{{ .Release.Name }}
@@ -54,7 +54,7 @@ data:
         plugins:
           - name: rate-limiting
             config:
-              minute: {{ .Values.api.ratelimit.minute }}
+              minute: {{ .Values.api.rate_limit.minute }}
               policy: local
 
 ---
