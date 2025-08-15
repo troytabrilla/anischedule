@@ -27,11 +27,11 @@ gateway:
   targetPort: 8000
   replicas: 1
 
-schedule_api:
+scheduleApi:
   image:
     repository: ""
     tag: "0.0.0"
-    pullPolicy: Never
+    pullPolicy: ""
   limits:
     memory: "1024Mi"
     cpu: "1000m"
@@ -40,7 +40,7 @@ schedule_api:
     cpu: "250m"
   port: 8080
   replicas: 1
-  rate_limit:
+  rateLimit:
     minute: 25
   path: /schedule/api
   base_ui_url: http://localhost
@@ -49,7 +49,7 @@ ui:
   image:
     repository: ""
     tag: "0.0.0"
-    pullPolicy: Never
+    pullPolicy: ""
   limits:
     memory: "1024Mi"
     cpu: "1000m"
@@ -58,5 +58,5 @@ ui:
     cpu: "250m"
   port: 3000
   replicas: 1
-  rate_limit:
+  rateLimit:
     minute: 100

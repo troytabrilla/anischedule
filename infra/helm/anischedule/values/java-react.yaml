@@ -1,7 +1,9 @@
-schedule_api:
+scheduleApi:
   image:
     repository: docker.io/library/schedule-api-java
+    pullPolicy: Never
 
 ui:
   image:
     repository: docker.io/library/ui-react
+    pullPolicy: Never

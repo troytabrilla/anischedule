@@ -1,4 +1,5 @@
-{{- $repository := .Values.schedule_api.image.repository | required ".Values.schedule_api.image.repository is required." -}}
+{{- $repository := .Values.scheduleApi.image.repository | required ".Values.scheduleApi.image.repository is required." -}}
+{{- $pullPolicy := .Values.scheduleApi.image.pullPolicy | required ".Values.scheduleApi.image.pullPolicy is required." -}}
 
 apiVersion: v1
 kind: Service
@@ -10,8 +11,8 @@ spec:
   selector:
     app: schedule-api
   ports:
-    - port: {{ .Values.schedule_api.port }}
-      targetPort: {{ .Values.schedule_api.port }}
+    - port: {{ .Values.scheduleApi.port }}
+      targetPort: {{ .Values.scheduleApi.port }}
 
 ---
 apiVersion: apps/v1
@@ -21,7 +22,7 @@ metadata:
   labels:
     app: schedule-api
 spec:
-  replicas: {{ .Values.schedule_api.replicas }}
+  replicas: {{ .Values.scheduleApi.replicas }}
   selector:
     matchLabels:
       app: schedule-api
@@ -32,19 +33,19 @@ spec:
     spec:
       containers:
         - name: schedule-api-{{ .Release.Name }}
-          image: {{ $repository }}:{{ .Values.schedule_api.image.tag }}
-          imagePullPolicy: {{ .Values.schedule_api.image.pullPolicy }}
+          image: {{ $repository }}:{{ .Values.scheduleApi.image.tag }}
+          imagePullPolicy: {{ $pullPolicy }}
           env:
             - name: REDIS_URL
               value: redis://cache-service-{{ .Release.Name }}.default.svc.cluster.local:6379
             - name: BASE_UI_URL
-              value: {{ .Values.schedule_api.base_ui_url }}
+              value: {{ .Values.scheduleApi.base_ui_url }}
           resources:
             limits:
-              memory: {{ .Values.schedule_api.limits.memory }}
-              cpu: {{ .Values.schedule_api.limits.cpu }}
+              memory: {{ .Values.scheduleApi.limits.memory }}
+              cpu: {{ .Values.scheduleApi.limits.cpu }}
             requests:
-              memory: {{ .Values.schedule_api.requests.memory }}
-              cpu: {{ .Values.schedule_api.requests.cpu }}
+              memory: {{ .Values.scheduleApi.requests.memory }}
+              cpu: {{ .Values.scheduleApi.requests.cpu }}
           ports:
-            - containerPort: {{ .Values.schedule_api.port }}
+            - containerPort: {{ .Values.scheduleApi.port }}

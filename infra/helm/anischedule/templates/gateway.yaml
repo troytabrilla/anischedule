@@ -19,21 +19,21 @@ data:
         plugins:
           - name: rate-limiting
             config:
-              minute: {{ .Values.ui.rate_limit.minute }}
+              minute: {{ .Values.ui.rateLimit.minute }}
               policy: local
       - host: schedule-api-service-{{ .Release.Name }}.default.svc.cluster.local
         name: schedule-api-service-{{ .Release.Name }}
-        port: {{ .Values.schedule_api.port }}
+        port: {{ .Values.scheduleApi.port }}
         protocol: http
         routes:
           - name: schedule-api
             paths:
-              - {{ .Values.schedule_api.path }}
+              - {{ .Values.scheduleApi.path }}
             strip_path: true
         plugins:
           - name: rate-limiting
             config:
-              minute: {{ .Values.schedule_api.rate_limit.minute }}
+              minute: {{ .Values.scheduleApi.rateLimit.minute }}
               policy: local
 
 ---
